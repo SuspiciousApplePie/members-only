@@ -1,0 +1,17 @@
+<% for (const message of messages) { %>
+    <div>
+        <h1><%= message.title %></h1>
+        <div>
+            <% if (isMember) { %>
+                <span><%= message.first_name %> <%= message.last_name %></span>
+                <span><%= message.username %></span>
+            <% } else { %>
+                <span>Member</span>
+            <% } %>
+        </div>
+        <p>
+            <%= message.message %>
+        </p>
+        <time datetime="<%= message.sent_at %>"><%= message.sent_at %></time>
+    </div>
+<% } %>
