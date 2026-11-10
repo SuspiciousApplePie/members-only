@@ -13,14 +13,17 @@ app.use("/", messageApp);
 app.use((req, res, next) => {
   next(new PageNotFound("Page not found"));
 });
+// eslint-disable-next-line
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode ? err.statusCode : 500;
-  res.status(statusCode).render("404", { statusCode, message: err.message });
+  const message = statusCode === 500 ? "Something went wrong" : err.message;
+  res.status(statusCode).render("404", { statusCode, message });
 });
 
 app.listen(PORT, (error) => {
   if (error) {
     return error;
   }
+  // eslint-disable-next-line
   console.log(`Listening to PORT ${PORT}`);
 });

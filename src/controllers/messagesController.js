@@ -12,8 +12,7 @@ async function displayMessages(req, res, next) {
     const isMember = VALID_ROLES.has(user.role);
     const isAdmin = ADMIN === user.role;
     res.render("messages", { messages, user, isMember, isAdmin, format });
-  } catch (e) {
-    console.log(e);
+  } catch {
     next(new PageNotFound("Page not found"));
   }
 }
