@@ -12,6 +12,6 @@
         <p>
             <%= message.message %>
         </p>
-        <time datetime="<%= message.sent_at %>"><%= message.sent_at %></time>
+        <time datetime="<%= message.sent_at %>"><%= format(message.sent_at, "eee, MMM dd yyyy"); %></time>
     </div>
 <% } %>

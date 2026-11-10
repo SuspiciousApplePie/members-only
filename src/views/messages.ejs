@@ -9,7 +9,7 @@
     <div class="container">
       <main>
         <% if(messages.length) { %>
-            <%- include("./partials/message.ejs", { messages, isMember }) %>
+            <%- include("./partials/message.ejs", { messages, isMember, format }) %>
         <% } else { %>
             <p>No messages found.</p>
         <% } %>

@@ -1,5 +1,6 @@
 import { getMessages, getUser } from "../db/query.js";
 import { PageNotFound } from "../errors.js";
+import { format } from "date-fns";
 
 const VALID_ROLES = new Set(["Admin", "Member"]);
 const ADMIN = "Admin";
@@ -10,8 +11,9 @@ async function displayMessages(req, res, next) {
     const user = await getUser();
     const isMember = VALID_ROLES.has(user.role);
     const isAdmin = ADMIN === user.role;
-    res.render("messages", { messages, user, isMember, isAdmin });
-  } catch {
+    res.render("messages", { messages, user, isMember, isAdmin, format });
+  } catch (e) {
+    console.log(e);
     next(new PageNotFound("Page not found"));
   }
 }
