@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.set("views", path.join(import.meta.dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/", messageApp);
 app.use((req, res, next) => {
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
 });
 // eslint-disable-next-line
 app.use((err, req, res, next) => {
+  console.log(err);
   const statusCode = err.statusCode ? err.statusCode : 500;
   const message = statusCode === 500 ? "Something went wrong" : err.message;
   res.status(statusCode).render("404", { statusCode, message });

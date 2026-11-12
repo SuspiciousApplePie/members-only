@@ -8,6 +8,9 @@
   <body>
     <div class="container">
       <main>
+        <% if (isMember) { %>
+          <%- include("./partials/add-new-msg"); %>
+        <% } %>
         <% if(messages.length) { %>
             <%- include("./partials/message.ejs", { messages, isMember, format }) %>
         <% } else { %>

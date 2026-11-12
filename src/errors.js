@@ -6,4 +6,20 @@ class PageNotFound extends Error {
   }
 }
 
-export { PageNotFound };
+class NotAuthorized extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = 401;
+    this.name = "Not Authorized";
+  }
+}
+
+class BadRequest extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = 400;
+    this.name = "Bad Request";
+  }
+}
+
+export { PageNotFound, NotAuthorized, BadRequest };
