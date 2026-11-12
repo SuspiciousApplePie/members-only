@@ -9,7 +9,7 @@
     <div class="container">
       <main>
         <% if (isMember) { %>
-          <%- include("./partials/add-new-msg"); %>
+          <%- include("./partials/add-new-msg.ejs"); %>
         <% } %>
         <% if(messages.length) { %>
             <%- include("./partials/message.ejs", { messages, isMember, format }) %>

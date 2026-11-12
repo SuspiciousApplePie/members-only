@@ -1,4 +1,10 @@
-import { getMessages, getUser, insertMessage } from "../db/query.js";
+import {
+  deleteMessageDB,
+  getMessageById,
+  getMessages,
+  getUser,
+  insertMessage,
+} from "../db/query.js";
 import { PageNotFound, NotAuthorized, BadRequest } from "../errors.js";
 import { format } from "date-fns";
 import { body, matchedData, validationResult } from "express-validator";
@@ -32,7 +38,7 @@ async function displayMessages(req, res, next) {
     res.render("messages", { messages, user, isMember, isAdmin, format });
   } catch (e) {
     if (e instanceof BadRequest || e instanceof NotAuthorized) {
-      next(e);
+      return next(e);
     }
     next(new PageNotFound("Page not found"));
   }
@@ -47,7 +53,7 @@ async function displayMessageForm(req, res, next) {
     res.render("new-message", { user });
   } catch (e) {
     if (e instanceof BadRequest || e instanceof NotAuthorized) {
-      next(e);
+      return next(e);
     }
     next(new PageNotFound("Page not found"));
   }
@@ -73,11 +79,50 @@ const sendMessage = [
       res.redirect("/messages");
     } catch (e) {
       if (e instanceof BadRequest || e instanceof NotAuthorized) {
-        next(e);
+        return next(e);
       }
       next(new PageNotFound());
     }
   },
 ];
 
-export { displayMessages, displayMessageForm, sendMessage };
+async function displayDeleteForm(req, res, next) {
+  try {
+    const user = await getUser();
+    if (!user) throw new NotAuthorized("You are not member of the club");
+    const isAdmin = ADMIN === user.role;
+    if (!isAdmin) throw new NotAuthorized("You are not an admin of this club");
+    const message = await getMessageById(req.params.msgId);
+    if (!message) throw new BadRequest("Message does not exist");
+    res.render("delete-msg", { message });
+  } catch (e) {
+    if (e instanceof BadRequest || e instanceof NotAuthorized) {
+      return next(e);
+    }
+    next(new PageNotFound());
+  }
+}
+
+async function deleteMessage(req, res, next) {
+  try {
+    const user = await getUser();
+    if (!user) throw new NotAuthorized("You are not member of this club");
+    const isAdmin = ADMIN === user.role;
+    if (!isAdmin) throw new NotAuthorized("You are not an admin of this club");
+    await deleteMessageDB(req.params.msgId);
+    res.redirect("/messages");
+  } catch (e) {
+    if (e instanceof BadRequest || e instanceof NotAuthorized) {
+      return next(e);
+    }
+    next(new PageNotFound());
+  }
+}
+
+export {
+  displayMessages,
+  displayMessageForm,
+  sendMessage,
+  displayDeleteForm,
+  deleteMessage,
+};

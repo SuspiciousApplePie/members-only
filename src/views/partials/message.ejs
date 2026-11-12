@@ -13,5 +13,8 @@
             <%= message.message %>
         </p>
         <time datetime="<%= message.sent_at %>"><%= format(message.sent_at, "eee, MMM dd yyyy"); %></time>
+        <div class="btn-control">
+            <a href="/messages/delete/<%= message.message_id %>">Delete</a>
+        </div>
     </div>
 <% } %>

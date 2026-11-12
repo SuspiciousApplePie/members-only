@@ -23,9 +23,18 @@ CREATE TABLE IF NOT EXISTS messages (
     title VARCHAR ( 255 ) NOT NULL,
     message TEXT NOT NULL,
     sent_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(user_id) REFERENCES users (user_id)
+    FOREIGN KEY(user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
+
+INSERT INTO roles (role) VALUES
+('Guest'), ('Member'), ('Admin');
+
+INSERT INTO users (username, first_name, last_name, role_id, password_hash) VALUES 
+('janedoe', 'Jane', 'Doe', 1, 'hash-sample'),
+('zhuyuan', 'Zhu', 'Yuan', 2, 'hash-sample'),
+('imallears', 'Miyabi', 'Hoshimi', 3, 'hash-sample');
 `;
+
 async function main() {
   const client = new Client({
     connectionString: process.argv[2],

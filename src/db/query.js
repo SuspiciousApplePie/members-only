@@ -22,10 +22,9 @@ async function getUser() {
 
 async function getMessages() {
   try {
-    throw new Error();
     const { rows } = await pool.query(
       `
-      SELECT title, first_name, last_name, username, message, sent_at FROM messages 
+      SELECT message_id, title, first_name, last_name, username, message, sent_at FROM messages 
       JOIN users ON users.user_id = messages.user_id
     `,
     );
@@ -46,4 +45,22 @@ async function insertMessage(newMessage) {
   }
 }
 
-export { getUser, getMessages, insertMessage };
+async function getMessageById(msgId) {
+  try {
+    const { rows } = await pool.query(
+      "SELECT title FROM messages WHERE message_id = $1 LIMIT 1",
+      [msgId],
+    );
+    return rows[0];
+  } catch {
+    throw new BadRequest("Failed to get message");
+  }
+}
+
+async function deleteMessageDB(msgId) {
+  try {
+    await pool.query("DELETE FROM messages WHERE message_id = $1", [msgId]);
+  } catch {}
+}
+
+export { getUser, getMessages, insertMessage, getMessageById, deleteMessageDB };
