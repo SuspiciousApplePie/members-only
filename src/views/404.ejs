@@ -6,7 +6,12 @@
     <title><%= message %></title>
   </head>
   <body>
-    <h1><%= statusCode %></h1>
-    <p><%= message %></p>
+    <div class="container">
+      <header><%- include("./partials/navbar.ejs") %></header>
+      <main>
+        <h1><%= statusCode %></h1>
+        <p><%= message %></p>
+      </main>
+    </div>
   </body>
 </html>

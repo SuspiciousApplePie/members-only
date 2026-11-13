@@ -6,11 +6,16 @@
     <title>Delete</title>
   </head>
   <body>
-    <form action="" method="post">
-      <p>Are you sure you want to delete <%= message.title%>?</p>
-      <div class="btn-control">
-        <button type="submit">Delete</button>
-      </div>
-    </form>
+    <div class="container">
+      <header><%- include("./partials/navbar.ejs") %></header>
+      <main>
+        <form action="" method="post">
+          <p>Are you sure you want to delete <%= message.title%>?</p>
+          <div class="btn-control">
+            <button type="submit">Delete</button>
+          </div>
+        </form>
+      </main>
+    </div>
   </body>
 </html>
